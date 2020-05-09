@@ -1,0 +1,89 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<title>COVID-AID SCORE</title> 
+</head>
+<body>
+<div class = "container">
+COVID-AID SCORE: <br>
+<br>
+A Prediction Model for Short-Term Mortality Among Hospitalized COVID-19 Patients <br>
+<br> 
+<form>
+  <div class="form-group row">
+    <label class="col-sm">Age, Years</label>
+    <div class="col-sm"><input type="text" id="age"></div>
+  </div>
+ <div class="form-group row">
+    <label class="col-sm">Mean Arterial pressure, mmHg</label>
+    <div class="col-sm"><input type="text" id="map"></div>
+  </div>
+ <div class="form-group row">
+    <label class="col-sm">Serum Creatinine, mg/dL</label>
+    <div class="col-sm"><input type="text" id="scr"></div>
+  </div>
+ <div class="form-group row">
+    <label class="col-sm">Severe Hypoxemia* Yes=1, No=0</label>
+    <div class="col-sm"><input type="text" id="hypox"></div>
+  </div>
+  <div class="form-group row">
+*severe hypoxemia defined as needing more than 4 liters of supplemental oxygen, non-rebreather mask or non-invasive (e.g. BiPAP) or invasive ventilation to maintain an oxygen saturation of >=90% , or failure to maintain an oxygen saturation of >=90%
+  </div>
+  <div class="form-group row">
+    <buttom type="submit" class="btn btn-primary" onclick="calculate()">Calculate Mortality Risk</button>
+  </div>
+</form>
+<br>
+7-Day Mortality, %  <p id="m7"> </p> <br>
+14-Day Mortality, %  <p id="m14"> </p> <br>
+-Division of Gastroenterology and Hepatology, Weill Cornell Medicine, New York-Presbyterian Hospital, New York, NY, USA
+<br>
+-Division of Gastroenterology, Hepatology and Endoscopy, Brigham and Women's Hospital, Boston, MA, USA
+</div>
+<script type="text/javascript">
+console.log("hello"); 
+function calculate(){
+var age = parseInt( document.getElementById("age").value);
+var map = parseInt( document.getElementById("map").value);
+var scr = parseInt( document.getElementById("scr").value);
+var hypox = parseInt( document.getElementById("hypox").value);
+
+var scr2 
+if (scr>=2) scr2 = 1
+if (scr<2) scr2 = 0
+
+var m7 = 100*(Math.exp(Math.log(age)* 6.4947 + 
+Math.log(map)* (-2.5365) + 
+0.3197 *(scr2) + 
+0.5864 *(hypox) -19.0309))/
+(1+Math.exp(Math.log(age)* 6.4947 + 
+Math.log(map)* (-2.5365) + 
+0.3197 *(scr2) + 
+0.5864 *(hypox) -19.0309))
+
+var m14 = 100*(Math.exp(Math.log(age)* 5.9314+ 
+Math.log(map)* (-1.8549)+ 
+0.5365* (scr2)+ 
+0.4425* (hypox) -19.2738))/
+(1+Math.exp(Math.log(age)* 5.9314+ 
+Math.log(map)* (-1.8549)+ 
+0.5365* (scr2)+ 
+0.4425* (hypox) -19.2738))
+
+document.getElementById("m7").innerHTML = m7.toFixed(1);
+document.getElementById("m14").innerHTML = m14.toFixed(1);
+}
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+
